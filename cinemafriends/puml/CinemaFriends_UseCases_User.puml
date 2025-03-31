@@ -1,0 +1,37 @@
+@startuml Диаграмма прецедентов для роли "Пользователь"
+
+left to right direction
+
+:Пользователь: as User
+
+'Знакомство с приложением
+"Получить\nприветственную\nинформацию\nо приложении" as (AppGreetings)
+"Ознакомиться\nи согласиться\nна соблюдение\nавторских прав" as (CopyRightAgreemnet)
+
+User -left- AppGreetings
+User -- CopyRightAgreemnet 
+
+
+'Выбор игры и процесс игры
+"Выбрать тип игры" as (ChooseGameType)
+"Играть" as (PlayGame)
+"Посмотреть\nправила игры" as (ShowGameRules)
+"Посмотреть\nправила\nкоммуникации" as (ShowCommunicationRules)
+"Оценить\nвопрос в игре" as (SetQuestionRating)
+
+User -- ChooseGameType
+User -right- PlayGame
+PlayGame <.down. ShowGameRules : <<extend>>
+PlayGame <.right. ShowCommunicationRules : <<extend>>
+PlayGame <.up. SetQuestionRating : <<extend>>
+
+'Остальные опции
+"Посмотреть\nинформацию о\nдругих проектах\nавтора" as (ShowRelatedProjectsInfo)
+"Получить\nсообщение\nоб ошибке,\nесли в системе\nпроизошел сбой\nзагрузки данных" as (ErrorMessage)
+"Отправить\nобратную связь\nразработчикам,\nесли в системе\nпроизошел сбой\nзагрузки данных" as (SendErrorFeedback)
+
+User -up- ShowRelatedProjectsInfo
+User -up- ErrorMessage
+ErrorMessage <.left. SendErrorFeedback : <<extend>>
+
+@enduml

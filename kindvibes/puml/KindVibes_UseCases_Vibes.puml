@@ -1,0 +1,62 @@
+@startuml UseCase диаграмма выпуска 1.0 приложения KindVibes: Получение теплых слов
+
+left to right direction
+
+:Пользователь: as User
+
+rectangle "Получение теплых слов" {
+
+    usecase GetVibes as "Получить теплые слова
+    --
+    <color:blue>По точному времени в пуш-уведомлениях</color>
+    ..
+    По случайному времени в указанном\nдиапазоне в пуш-уведомлениях 
+    ..
+    <color:blue>По времени в приложении</color>
+    ..
+    <color:blue>По запросу в приложении</color>"
+}
+
+rectangle "Настройка получения теплых слов" {
+
+    usecase SetVibesShow as "Настроить получение\nтеплых слов
+    --
+    <color:blue>По точному времени в пуш-уведомлениях</color>
+    ..
+    По случайному времени в указанном\nдиапазоне в пуш-уведомлениях 
+    ..
+    <color:blue>По времени в приложении</color>
+    ..
+    <color:blue>По запросу в приложении</color>"
+
+    usecase GetVibesShowSettings as "Просмотреть настройки\nполучения теплых слов
+    --
+    <color:blue>По времени в пуш-уведомлениях</color>
+    ..
+    <color:blue>По времени в приложении</color>
+    ..
+    <color:blue>По запросу в приложении</color>"
+}
+
+
+rectangle "Управление теплыми\nсловами в наборах" {
+
+    (Просмотреть\nтеплые слова\nв наборе) as ShowVibesInPack
+
+    (Добавить\nтеплые слова\nв набор) as AddVibeToPack
+
+    (Удалить теплые\nслова из набора) as DeleteVibeFromPack
+
+    (Редактировать\nтеплые слова) as EditVibe 
+}
+
+User ---> GetVibes
+User ---> SetVibesShow
+User ---> GetVibesShowSettings
+
+User -up--> ShowVibesInPack
+User -up--> AddVibeToPack
+User -up--> DeleteVibeFromPack
+User -up--> EditVibe
+
+@enduml

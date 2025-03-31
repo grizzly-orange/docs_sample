@@ -1,0 +1,24 @@
+@startuml Диаграмма данных CinemaFriends 1.0
+
+class "Тип игры" as GameTypes
+class "Игра" as Game
+class "Игровая\nкарточка" as GameCard
+class "Правила игры" as GameRules
+class "Правила\nкоммуникации" as CommunicationRules
+class "Информация\nоб авторе" as AuthorInfo
+class "Информация\nо других\nпроектах автора" as ProjectsInfo
+class "Информация\n о проекте" as Project
+
+GameTypes "1" -- "1" Game
+Game "1" -- "m..n" GameCard
+Game "1"-- "1" GameRules
+
+note left of GameCard: Количество карточек\nопределяется\nбизнес-правилами
+
+note left of Game: В следующих\nвыпусках\nсвязи 1 к 1 изменятся:\nбудет несколько игр \nна один тип игры\nи одни правила\nна несколько игр
+
+Game .. CommunicationRules: Правила коммуникации\nедины для приложения\nи относятся ко всем играм
+
+ProjectsInfo "1"-- "1..n" Project
+
+@enduml

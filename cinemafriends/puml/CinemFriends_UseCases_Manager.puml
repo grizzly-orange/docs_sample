@@ -1,0 +1,11 @@
+@startuml Диаграмма прецедентов для роли "Менеджер продукта"
+
+left to right direction
+
+:Менеджер продукта: as ProductManager
+
+"Получить логи\nо действиях пользователя" as (Logs)
+
+ProductManager -- Logs
+
+@enduml

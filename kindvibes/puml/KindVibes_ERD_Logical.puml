@@ -1,0 +1,81 @@
+@startuml Диаграмма данных приложения KindVibes
+
+class PreparedPack as "Готовый набор" {
+    **PK** Идентификатор набора
+    Название набора
+    **FK** Гендер
+    **FK** Перечень типов
+} 
+
+enum PreparedPackGender as "Гендер" {
+    **PK** Идентификатор гендера
+    Название гендера
+}
+
+class PreparedPackType as "Тип готового набора" {
+    **PK** Идентификатор типа
+    Название типа
+}
+
+class PreparedVibe as "Готовые теплые слова" {
+    **PK** Идентификатор теплых слов
+    Текст теплых слов
+    **FK** Идентификатор готового набора
+}
+
+class ActivePack as "Активный набор" {
+    **PK** Идентификатор набора
+    Название
+    **FK** Идентификатор готового набора
+}
+
+class ActiveVibe as "Активные теплые слова"{
+    **PK** Идентификатор теплых слов
+    Текст теплых слов
+    **FK** Идентификатор готового набора
+}
+
+class InAppInteravlSchedule as "Настройка показа\nпо расписанию в приложении" {
+    **PK** Идентификатор настройки
+    Время начала интервала 
+    Время завершения интервала
+    **FK** Перечень активных наборов
+}
+
+class PushesTimeScedule as "Настройка показа\nпуш-уведомлений по времени" {
+    **PK** Идентификатор настройки
+    Дата начала
+    Время начала
+    **FK** Периодичность
+    **FK** Перечень активных наборов
+}
+
+class PushesIntervalSchedule as "Настройка показа\nпуш-уведомлений в интервале" {
+    **PK** Идентификатор настройки
+    Дата начала
+    Время начала интервала
+    Время завершения интервала
+    **FK** Периодичность
+    **FK** Перечень активных наборов
+}
+
+enum PushesPeriod as "Периодичность" {
+    **PK** Идентификатор периодичности
+    Период
+}
+
+PreparedPack "n " -- "m " PreparedPackType
+PreparedPack "n" -- "1" PreparedPackGender
+PreparedVibe "n " -- "1 " PreparedPack
+
+ActiveVibe "n " -- "1 " ActivePack
+PreparedPack "1" .right. "1" ActivePack
+
+ActivePack "n   " -- "m" InAppInteravlSchedule
+ActivePack "n" -- "m  " PushesTimeScedule
+ActivePack "n" -- "m    " PushesIntervalSchedule 
+
+PushesTimeScedule "n" -- "1   " PushesPeriod
+PushesIntervalSchedule "n   " -- "1" PushesPeriod
+
+@enduml

@@ -1,0 +1,108 @@
+@startuml Диаграмма данных приложения KindVibes
+
+class PreparedPack {
+    **PK** id: Int
+    name: String
+    **FK** genderId: Int
+}
+
+enum PreparedPackGender {
+    **PK** id: Int
+    name: String
+}
+
+class PreparedPackCrossType as "PreparedPacksTypes" {
+    **FK** **PK**|- preparedPackId: Int
+    **FK** **PK**|- preparedPackTypeId: Int
+}
+
+class PreparedPackType {
+    **PK** id: Int
+    name: String
+}
+
+class PreparedVibe {
+    **PK** id: Int
+    text: String
+    **FK** preparedPackId: Int
+}
+
+class ActivePackCrossPreparedPack as "Activated\nPreparedPacks" {
+    **FK** **PK** |- activePackId: Int
+    **FK** **PK** |- preparedPackId: Int
+}
+
+class ActivePack {
+    **PK** id: Int
+    name: String
+}
+
+class ActiveVibe {
+    **PK** id: Int
+    text: String
+    **FK** activePackId: Int
+}
+
+class PacksInAppSchedule as "PacksInAppOnSchedule" {
+    **FK** **PK**|- activePackId: Int
+    **FK** **PK**|- inAppIntervalScheduleId: Int    
+}
+
+class InAppInteravlSchedule {
+    **PK** id: Int
+    startTimeInSec: Int 
+    endTimeInSec: Int
+}
+
+class PacksInPushesOnTime as "PacksInPushesOnTime" {
+    **FK** **PK**|- activePackId: Int
+    **FK** **PK**|- pushesTimeScheduleId: Int    
+}
+
+class PushesTimeScedule {
+    **PK** id: Int
+    dateAndTimeMillis: Int
+    **FK** periodId: Int
+}
+
+class PacksInPushesOnSchedule as "PacksInPushesOnSchedule" {
+    **FK** **PK**|- activePackId: Int
+    **FK** **PK**|- pushesIntervalScheduleId: Int    
+}
+
+class PushesIntervalSchedule {
+    **PK** id: Int
+    date: Date
+    startdateAndTimeMillis: Int
+    intervalInSec: Int
+    **FK** periodId: Int
+}
+
+enum PushesPeriod {
+    **PK** id: Int
+    periodMs: Int
+}
+
+PreparedPack "n" -- "1" PreparedPackGender
+PreparedPack "1 " -- "n " PreparedPackCrossType
+PreparedPackCrossType "n " -- "1 " PreparedPackType
+PreparedVibe "n " -- "1 "PreparedPack
+
+ActiveVibe "n " -- "1 " ActivePack
+
+PreparedPack "1" -right- "1" ActivePackCrossPreparedPack
+ActivePackCrossPreparedPack "1" -right-- "1" ActivePack
+
+ActivePack "1" -- "n" PacksInAppSchedule
+PacksInAppSchedule "n " -- "1 " InAppInteravlSchedule
+
+ActivePack "1" -- "n " PacksInPushesOnTime
+PacksInPushesOnTime "n " -- "1 " PushesTimeScedule
+
+ActivePack "1" -- "n" PacksInPushesOnSchedule
+PacksInPushesOnSchedule "n " -- "1 " PushesIntervalSchedule 
+
+PushesTimeScedule "n" -- "1   " PushesPeriod
+PushesIntervalSchedule "n   " -- "1" PushesPeriod
+
+@enduml

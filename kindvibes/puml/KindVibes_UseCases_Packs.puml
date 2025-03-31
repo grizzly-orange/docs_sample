@@ -1,0 +1,54 @@
+@startuml UseCase диаграмма выпуска 1.0 приложения KindVibes: Настройка получения теплых слов
+
+left to right direction
+
+:Пользователь: as User
+
+rectangle "Готовые наборы" {
+    usecase PreparedPacksShow as "<color:blue>Просмотреть перечень</color>\n<color:blue>готовых наборов</color>"
+
+    usecase PreparedPacksFilter as "Отфильтровать перечень\nготовых наборов\nпо гендеру и категории"
+
+    usecase PreparedPacksActivate as "<color:blue>Активировать</color>\n<color:blue>готовый набор</color>"
+
+    usecase PreparedPacksPay as "Купить платный\nготовый набор"
+
+    usecase PreparedPacksDeactivate as "Деактивировать\nготовый набор"
+}
+
+rectangle "Собственные наборы" {
+
+    usecase OwnPacksCreate as "Создать собственный\nнабор в приложении"
+
+    usecase OwnPacksDownload as "Загрузить собственный\nнабор из файла"
+
+    usecase OwnPacksDelete as "Удалить\n собственный набор"
+}
+
+rectangle "Активные наборы" {
+
+    usecase ActivePacksShow as "Просмотреть перечень\nактивных наборов"
+
+    usecase ActivePacksRename as "Переименовать\nактивный набор"
+
+    usecase ActivePreparedPacksRestore as "Восстановить активный\nготовый набор,\nотредактированный\nпользователем"
+}
+
+
+User --> PreparedPacksShow
+PreparedPacksShow <-left- PreparedPacksFilter : <<extend>>
+
+User --> PreparedPacksActivate
+PreparedPacksActivate <-left- PreparedPacksPay : <<extend>>
+
+User --> PreparedPacksDeactivate
+
+User -up-> OwnPacksDelete
+User -up-> OwnPacksDownload
+User -up-> OwnPacksCreate
+
+User -up-> ActivePreparedPacksRestore
+User -up-> ActivePacksRename
+User -up-> ActivePacksShow
+
+@enduml
